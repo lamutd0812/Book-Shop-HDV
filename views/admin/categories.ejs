@@ -1,0 +1,50 @@
+<%- include('./shared/header.ejs') %>
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid">
+            <h3 class="mt-4">Categories</h3>
+            <div class="card mb-4">
+                <div class="card-header"><i class="fa fa-table"></i> Thông tin thể loại</div>
+                <div class="card-body">
+                    <a class="btn btn-primary" href="/admin/add-category" style="margin-bottom: 20px"><i class="fa fa-plus"></i> Thêm mới</a>
+                    <div class="table-responsive">
+                        <% let stt=1 %>
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>               
+                                    <th>Tên thể loại</th>
+                                    <th>Hình ảnh</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (categories.length > 0){ %>
+                                    <% for(let c of categories){ %>
+                                        <tr>
+                                            <td><%= stt++ %></td>
+                                            <td><%= c.name %></td>
+                                            <td><img src="<%= c.imageUrl %>" style="display: block; max-width: 20%; max-height: 20%;"></td>                             
+                                        </tr> 
+                                    <% } %>
+                                <% } %>                                                             
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="py-4 bg-light mt-auto">
+        <div class="container-fluid">
+            <div class="d-flex align-items-center justify-content-between small">
+                <div class="text-muted">Copyright &copy; Your Website 2019</div>
+                <div>
+                    <a href="#">Privacy Policy</a>
+                    &middot;
+                    <a href="#">Terms &amp; Conditions</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+<%- include('./shared/footer.ejs') %>

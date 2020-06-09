@@ -1,0 +1,30 @@
+<%- include('./shared/header.ejs') %>
+<div id="layoutSidenav_content">
+    <main>
+        <h3 style="margin: 20px; text-align: center;">THÊM THỂ LOẠI SÁCH MỚI</h3>
+        <form action="/admin/add-category" method="post" enctype="multipart/form-data">
+            <!-- ..error msg here ... -->
+            <div style="text-align: center; color: red"><%= error %></div> 
+
+            <div class="form-group row" style="margin:10px 100px">
+                <label class="col-sm-3 col-form-label">Tên thể loại:</label>
+                <div class="col-sm-9">
+                    <input type="text" id="name" name="name" value="<% category.name %>" class="form-control">
+                </div>
+            </div> 
+            
+            <div class="form-group row" style="margin:10px 100px">
+                <label class="col-sm-3 col-form-label">Hình ảnh:</label>
+                <div class="col-sm-9">
+                    <input type="file" id="image" name="image" class="form-control">
+                </div>
+            </div>
+
+            <div style="margin:20px 330px">
+                <input class="btn btn-primary" type="submit" value="Thêm" name="add">
+            </div>
+
+        </form>
+    </main>
+</div>
+<%- include('./shared/header.ejs') %>

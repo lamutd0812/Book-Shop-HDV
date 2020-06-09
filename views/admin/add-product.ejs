@@ -1,0 +1,66 @@
+<%- include('./shared/header.ejs') %>
+<div id="layoutSidenav_content">
+    <main>
+        <h3 style="margin: 20px; text-align: center;">THÊM SÁCH MỚI</h3>
+        <form action="/admin/add-product" method="post" enctype="multipart/form-data">
+            
+            <% if (error.length > 0) { %>
+                <div style="text-align: center; color: red"><%= error %></div> 
+			<% } %>        
+
+            <div class="form-group row" style="margin:10px 100px">
+                <label class="col-sm-3 col-form-label">Tên sách:</label>
+                <div class="col-sm-9">
+                    <input type="text" id="name" name="name" value="<%= product.name %>" class="form-control">
+                </div>
+            </div>
+            
+            <div class="form-group row" style="margin:10px 100px">
+                <label class="col-sm-3 col-form-label">Thể loại</label>
+                <div class="col-sm-9">
+                    <select class="form-control" id="category" name="category">
+                        <% if (categories.length > 0){ %>
+                            <% for(let category of categories){ %>
+                                <option value="<%= category._id %>"><%= category.name %></option>
+                            <% } %>
+                        <% } %>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row" style="margin:10px 100px">
+                <label class="col-sm-3 col-form-label">Tác giả:</label>
+                <div class="col-sm-9">
+                    <input type="text" id="author" name="author"  value="<%= product.author %>" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group row" style="margin:10px 100px">
+                <label class="col-sm-3 col-form-label">Hình ảnh:</label>
+                <div class="col-sm-9">
+                    <input type="file" id="image" name="image" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group row" style="margin:10px 100px">
+                <label class="col-sm-3 col-form-label">Mô tả:</label>
+                <div class="col-sm-9">
+                    <input type="text" id="description" name="description"  value="<%= product.description %>" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group row" style="margin:10px 100px">
+                <label class="col-sm-3 col-form-label">Giá:</label>
+                <div class="col-sm-9">
+                    <input type="number" step="0.01" id="price" name="price"  value="<%= product.price %>" class="form-control">
+                </div>
+            </div>
+
+            <div style="margin:20px 330px">
+                <input class="btn btn-primary" type="submit" value="Thêm" name="add">
+            </div>
+
+        </form>
+    </main>
+</div>
+<%- include('./shared/header.ejs') %>

@@ -1,0 +1,62 @@
+<%- include('./shared/header.ejs') %>
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid">
+            <h3 class="mt-4">Books</h3>
+            <div class="card mb-4">
+                <div class="card-header"><i class="fa fa-table"></i> Thông tin sách</div>
+                <div class="card-body">
+                    <a class="btn btn-primary" href="/admin/add-product" style="margin-bottom: 20px"><i class="fa fa-plus"></i> Thêm mới</a>
+                    <div class="table-responsive">
+                        <% let stt=1 %>
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tên sách</th>
+                                    <th>Thể loại</th>
+                                    <th>Tác giả</th>
+                                    <th>Hình ảnh</th>
+                                    <th>Mô tả</th>
+                                    <th>Giá</th>
+                                    <th>Sửa</th>
+                                    <th>Xóa</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (products.length > 0){ %>
+                                    <% for(let p of products){ %>
+                                        <tr>
+                                            <td><%= stt++ %></td>
+                                            <td><%= p.name %></td>
+                                            <td><%= p.categoryId.name %></td>
+                                            <td><%= p.author %></td>
+                                            <td><img src="<%= p.imageUrl %>" style="display: block; max-width: 100%; max-height: 50%;"></td>
+                                            <td><%= p.description %></td>
+                                            <td>$<%= p.price %></td> 
+                                            <td><button class="btn btn-success">Edit</button></td>
+                                            <td><button class="btn btn-danger">Delete</button></td>                             
+                                        </tr> 
+                                    <% } %>
+                                <% } %>                                                             
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="py-4 bg-light mt-auto">
+        <div class="container-fluid">
+            <div class="d-flex align-items-center justify-content-between small">
+                <div class="text-muted">Copyright &copy; Your Website 2019</div>
+                <div>
+                    <a href="#">Privacy Policy</a>
+                    &middot;
+                    <a href="#">Terms &amp; Conditions</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+<%- include('./shared/footer.ejs') %>
