@@ -96,7 +96,7 @@
     });
 
 
-    $('.hero__categories__all').on('click', function(){
+    $('.hero__categories__all').on('click', function () {
         $('.hero__categories ul').slideToggle(400);
     });
 
@@ -212,13 +212,137 @@
             var newVal = parseFloat(oldValue) + 1;
         } else {
             // Don't allow decrementing below zero
-            if (oldValue > 0) {
+            if (oldValue > 1) {
                 var newVal = parseFloat(oldValue) - 1;
             } else {
-                newVal = 0;
+                newVal = 1;
             }
         }
         $button.parent().find('input').val(newVal);
     });
 
+    /*-------------------
+		add one product to cart
+    --------------------- */
+
+    $('.a-add-to-cart').off('click').on('click', function (e) {
+        e.preventDefault();
+        var productId = $(this).data('id');
+        var quantity = 1;
+
+        $.ajax({
+            url: '/cart/add-one',
+            data: JSON.stringify({
+                productId: productId,
+                quantity: quantity
+            }),
+            type: 'POST',
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (res) {
+                console.log(res);
+                if (res.status = 200) {
+                    alert(res.message);
+                }
+            }
+        });
+        //$("#add-" + productId).submit();
+    });
+
+    // deleteCartItem
+    $('.btnDeleteCartItem').off('click').on('click', function (e) {
+        e.preventDefault();
+        var productId = $(this).data('id');
+        $.ajax({
+            url: '/cart/delete-item',
+            data: JSON.stringify({ productId: productId }),
+            type: 'POST',
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (res) {
+                console.log(res);
+                if (res.status = 200) {
+                    $('.tr-' + productId).empty();
+                    $('.spanTotalPrice').text("$" + res.totalPrice);
+                    setTimeout(function () {
+                        alert(res.message);
+                    }, 20);
+                }
+            }
+        });
+    });
+
+    // update cart item quantity
+    $('.txt-qty').off('change').on('change', function () {
+        var productId = $(this).data('id');
+        var quantity = parseInt($(this).val());
+
+        //set min quantity
+        var min = parseInt($(this).attr('min'));
+        if (quantity < min) {
+            quantity = min;
+        }
+
+        $.ajax({
+            url: '/cart/update-qty',
+            data: JSON.stringify({
+                productId: productId,
+                quantity: quantity
+            }),
+            type: 'POST',
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (res) {
+                console.log(res);
+                if (res.status = 200) {
+                    $('.newPrice-' + productId).text("$" + res.newPrice);
+                    $('.spanTotalPrice').text("$" + res.totalPrice);
+                }
+            }
+        });
+    });
+
+    // searching
+    $("#txtKeyword").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: "/search-by-keyword",
+                type: "GET",
+                data: request,  // request is the value of search input
+                success: function (data) {
+                    console.log(data);
+                    // Map response values to fiedl label and value
+                    response($.map(data.products, function (el) {
+                        return {
+                            label: el.name,
+                            value: el._id
+                        };
+                    }));
+                }
+            });
+        },
+
+        // The minimum number of characters a user must type before a search is performed.
+        minLength: 2,
+
+        // set an onFocus event to show the result on input field when result is focused
+        focus: function (event, ui) {
+            this.value = ui.item.label;
+            // Prevent other event from not being execute
+            event.preventDefault();
+        },
+        select: function (event, ui) {
+            // Prevent value from being put in the input:
+            this.value = ui.item.label;
+            // Set the id to the next input hidden field
+            $(this).next("input").val(ui.item.value);
+            // Prevent other event from not being execute            
+            event.preventDefault();
+            // optionnal: submit the form after field has been filled up
+            $('#quicksearch').submit();
+        }
+    });
+
 })(jQuery);
+
+

@@ -40,7 +40,9 @@ body {
 
 h1,
 h2,
-h3,
+h3 {
+	text-align: center;
+},
 h4,
 h5,
 h6 {
@@ -749,6 +751,10 @@ ol {
 	padding-left: 75px;
 }
 
+.hero__text {
+	margin-top: 300px;
+}
+
 .hero__text span {
 	font-size: 14px;
 	text-transform: uppercase;
@@ -1012,8 +1018,8 @@ ol {
 }
 
 .latest-product__item__pic img {
-	height: 110px;
-	width: 110px;
+	height: 200px;
+	width: 25px;
 }
 
 .latest-product__item__text {
@@ -1125,6 +1131,7 @@ ol {
 }
 
 .sidebar__item .latest-product__text h4 {
+	font-size: 20px;
 	margin-bottom: 45px;
 }
 
@@ -1666,6 +1673,12 @@ ol {
 	color: #ffffff;
 }
 
+.product__pagination .active {
+	background: #7fad39;
+	border-color: #7fad39;
+	color: #ffffff;
+}
+
 .product__pagination a:last-child,
 .blog__pagination a:last-child {
 	margin-right: 0;
@@ -1763,6 +1776,15 @@ ol {
 .product__details__text ul li span samp {
 	color: #dd2222;
 }
+
+.product__details__text ul li span a {
+	color: #dd2222;
+}
+
+.product__details__text ul li span a:hover {
+	color: #2a06cc;
+}
+
 
 .product__details__text ul li .share {
 	display: inline-block;
@@ -1927,6 +1949,14 @@ ol {
 	border-bottom: 1px solid #ebebeb;
 }
 
+.shoping__cart__table table tbody tr td a{
+	color: #000;
+}
+
+.shoping__cart__table table tbody tr td a:hover{
+	color: #7710cc;
+}
+
 .shoping__cart__table table tbody tr td.shoping__cart__item {
 	width: 630px;
 	text-align: left;
@@ -1935,6 +1965,8 @@ ol {
 .shoping__cart__table table tbody tr td.shoping__cart__item img {
 	display: inline-block;
 	margin-right: 25px;
+    max-width: 20%;
+    max-height: 20%;
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__item h5 {
@@ -1975,6 +2007,12 @@ ol {
 	height: 40px;
 }
 
+.shoping__cart__table table tbody tr td.shoping__cart__quantity .pro-qty1 .txt-qty{
+	float: inherit;
+	width: 80px;
+	color: #000;
+}
+
 .shoping__cart__table table tbody tr td.shoping__cart__quantity .pro-qty input {
 	color: #1c1c1c;
 }
@@ -1999,6 +2037,7 @@ ol {
 
 .primary-btn.cart-btn.cart-btn-right {
 	float: right;
+	color: #000;
 }
 
 .shoping__discount {
@@ -2048,6 +2087,10 @@ ol {
 	margin-bottom: 28px;
 }
 
+.shoping__checkout button {
+	display: flex;
+}
+
 .shoping__checkout ul {
 	margin-bottom: 28px;
 }
@@ -2075,6 +2118,12 @@ ol {
 	float: right;
 }
 
+.shoping__checkout ul li button {
+	display: inline-block;
+	font-size: 18px;
+	margin-right: 10px;
+}
+
 .shoping__checkout .primary-btn {
 	display: block;
 	text-align: center;
@@ -2083,6 +2132,10 @@ ol {
 /*---------------------
   Checkout
 -----------------------*/
+
+.text-center{
+	text-align: center;
+}
 
 .checkout {
 	padding-top: 80px;
@@ -2132,6 +2185,7 @@ ol {
 
 .checkout__input p span {
 	color: #dd2222;
+	margin-left: 5px;
 }
 
 .checkout__input input {
@@ -2204,6 +2258,20 @@ ol {
 	opacity: 0;
 }
 
+/* custom */
+.checkout__order__btn {
+	display: flex;
+	font-size: 18px;
+}
+
+.checkout__order__btn button{
+	margin-right: 10px;
+}
+
+.checkout__order__btn button a{
+	color: #FFFF;
+}
+
 .checkout__order {
 	background: #f5f5f5;
 	padding: 40px;
@@ -2218,6 +2286,20 @@ ol {
 	margin-bottom: 20px;
 }
 
+.checkout__order h5 {
+	text-align: center;
+}
+
+.checkout__order h5 a{
+	color: #000;
+}
+
+.checkout__order h5 a:active,
+.checkout__order h5 a:hover{
+	color: #a80bcf;
+}
+
+
 .checkout__order .checkout__order__products {
 	font-size: 18px;
 	color: #1c1c1c;
@@ -2227,6 +2309,7 @@ ol {
 
 .checkout__order .checkout__order__products span {
 	float: right;
+	margin-left: 55px;
 }
 
 .checkout__order ul {
@@ -2243,6 +2326,23 @@ ol {
 .checkout__order ul li span {
 	font-weight: 700;
 	float: right;
+	margin-left: 80px;
+}
+
+.checkout__order ul li span a{
+	color: #000;
+}
+
+.checkout__order ul li a{
+	color: #000;
+}
+
+.checkout__order ul li a:hover{
+	color: #7b24cc;
+}
+
+.checkout__order ul li span a:hover{
+	color: #4e09699a;
 }
 
 .checkout__order .checkout__order__subtotal {

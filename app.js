@@ -48,6 +48,7 @@ const shopRoutes = require('./routes/shop');
 //app.use(morgan('dev')); // log all request in console log
 //app.use(cookieParser()); // read cookie (for authentication)
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(
     multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
 );

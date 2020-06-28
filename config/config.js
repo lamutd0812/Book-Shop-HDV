@@ -1,5 +1,5 @@
 module.exports = {
-    'db_uri': '',
+    'db_uri': 'mongodb+srv://lamnguyen:4jic1WzLSNouEhSv@cluster0-rkh3t.mongodb.net/bookstore?retryWrites=true&w=majority',
     'facebook_auth': {
         'appId': '',
         'appSecret': '',

@@ -1,0 +1,79 @@
+<%- include('./shared/header.ejs') %>
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="/assets/img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Trang thanh toán</h2>
+                    <div class="breadcrumb__option">
+                        <a href="./index.html">Trang chủ</a>
+                        <span>Thanh toán</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Checkout Section Begin -->
+<section class="checkout spad">
+    <div class="container">
+        <div class="checkout__form">
+            <form action="#">
+                <div class="row">
+                    <div class="col-lg-8 col-md-6 centered">
+                        <% if (cartItems.length > 0) { %>
+                        <div class="checkout__order">
+                            <h4 class="text-center">Đơn hàng</h4>
+                            <div class="checkout__order__products">Sản phẩm <span>Thành tiền</span></div>
+                            <ul>
+                                <!-- <% if (cartItems.length > 0) { %> -->
+                                <% for (item of cartItems) { %>
+                                <li><a href="/product/<%= item.product._id %>"><%= item.product.name %></a> <b>x <%= item.quantity %></b>
+                                    <span>$<%= item.product.price * item.quantity %></span></li>
+                                <% } %>
+                                <!-- <% } %> -->
+                            </ul>
+                            <div class="checkout__order__subtotal">Giảm giá <span>$0</span></div>
+                            <div class="checkout__order__total">Tổng số tiền <span>$<%= totalPrice %></span></div>
+
+                            <h4 class="text-center"> Thanh toán </h4>
+                            <!-- <a href="/paypal-checkout">Paypal checkout</a> -->
+                            <div class="checkout__order__btn">
+                                <button id="btn-cod" class="btn btn-success"
+                                ><i class="fa fa-money"></i>
+                                <a href="/place-order">COD</a></button>
+                                <button id="btn-paypal" class="btn btn-success">
+                                    <i class="fa fa-paypal"></i>
+                                    <a href="/paypal-checkout">Paypal</a>
+                                </button>
+                                <button id="btn-stripe" class="btn btn-success"><i class="fa fa-cc-stripe"></i>
+                                    Stripe</button>
+                                <button id="btn-vnpay" class="btn btn-success"><i class="fa fa-money"></i>
+                                    VNPay</button>
+                            </div>
+                            <!-- Stripe Checkout  -->
+                            <script src="https://js.stripe.com/v3/"></script>
+                            <script>
+                                var stripe = Stripe('pk_test_8f4Wb5zBj5FCIStyjkPpA1iq00xESPcwxs');
+                                var btnStripe = document.getElementById('btn-stripe');
+                                btnStripe.addEventListener('click', function () {
+                                    stripe.redirectToCheckout({
+                                        sessionId: '<%= stripeSessionId %>'
+                                    });
+                                });
+                            </script>
+                        </div>
+                        <% } else { %>
+                            <h3 class="centered">Không có sản phẩm nào trong giỏ hàng!</h3>
+                        <% } %>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<!-- Checkout Section End -->
+<%- include('./shared/footer.ejs') %>

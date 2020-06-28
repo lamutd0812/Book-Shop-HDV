@@ -1,0 +1,158 @@
+<%- include('./shared/header.ejs') %>
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="/assets/img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>N4 Book Store</h2>
+                    <div class="breadcrumb__option">
+                        <a href="/">Trang chủ</a>
+                        <span>Sản phẩm</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Product Section Begin -->
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-5">
+                <div class="sidebar">
+                    <div class="sidebar__item">
+                        <h4>Thể loại</h4>
+                        <ul>
+                            <% if (categories.length > 0){ %>
+                                <% for(let c of categories){ %>
+                                <tr>
+                                    <li><a href="/products/category/<%= c._id %>"><%= c.name %></a></li>
+                                </tr>
+                                <% } %>
+                            <% } %>
+                        </ul>
+                    </div>
+                    <div class="sidebar__item">
+                        <h4>Giá</h4>
+                        <div class="price-range-wrap">
+                            <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
+                                data-min="10" data-max="540">
+                                <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
+                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                            </div>
+                            <div class="range-slider">
+                                <div class="price-input">
+                                    <input type="text" id="minamount">
+                                    <input type="text" id="maxamount">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar__item">
+                        <div class="latest-product__text">
+                            <h4>Sản phẩm mới nhất</h4>
+                            <div class="latest-product__slider owl-carousel">
+                                <div class="latest-prdouct__slider__item">
+                                    <% if (latestProducts.length > 0){ %>
+                                        <% for(let p of latestProducts){ %>
+                                            <a href="/product/<%= p._id %>" class="latest-product__item">
+                                                <div class="latest-product__item__pic">
+                                                    <img src="/<%= p.imageUrl %>" alt="">
+                                                </div>
+                                                <!-- <div class="latest-product__item__text">
+                                                    <h6><%= p.name %></h6>
+                                                    <span>$<%= p.price %>0</span>
+                                                </div> -->
+                                            </a>
+                                        <% } %>
+                                    <% } %>       
+                                </div>
+                                <div class="latest-prdouct__slider__item">
+                                    <% if (latestProducts2.length > 0){ %>
+                                        <% for(let p of latestProducts2){ %>
+                                            <a href="/product/<%= p._id %>" class="latest-product__item">
+                                                <div class="latest-product__item__pic">
+                                                    <img src="/<%= p.imageUrl %>" alt="">
+                                                </div>
+                                                <!-- <div class="latest-product__item__text">
+                                                    <h6><%= p.name %></h6>
+                                                    <span>$<%= p.price %>0</span>
+                                                </div> -->
+                                            </a>
+                                        <% } %>
+                                    <% } %>       
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-7">
+                <div class="filter__item">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-5">
+                            <div class="filter__sort">
+                                <span>Sắp xếp</span>
+                                <select>
+                                    <option value="0">Ngẫu nhiên</option>
+                                    <option value="1">Giá cao</option>
+                                    <option value="2">Giá thấp</option>
+                                    <option value="3">Mới nhất</option>
+                                    <option value="4">Bán chạy</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div class="filter__found">
+                                <h6><span><%= products.length %></span> Sản phẩm có sẵn</h6>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3">
+                            <div class="filter__option">
+                                <span class="icon_grid-2x2"></span>
+                                <span class="icon_ul"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <% if (products.length > 0){ %>
+                        <% for(let p of products){ %>
+                        <form id="add-<%= p._id %>" action="/cart" method="POST">
+                            <input type="hidden" name="productId" value="<%= p._id %>">
+                            <input type="hidden" name="quantity" value="1">
+                        </form>
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="product__item">
+                                <div class="product__item__pic set-bg" data-setbg="/<%= p.imageUrl %>">
+                                    <ul class="product__item__pic__hover">
+                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                        <% if(isAuth) { %>
+                                            <li><a class="a-add-to-cart" data-id="<%= p._id %>"><i class="fa fa-shopping-cart"></i></a></li>    
+                                        <% }else { %>
+                                            <li><a href="/login"><i class="fa fa-shopping-cart"></i></a></li>
+                                        <% } %> 
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6><a href="/product/<%= p._id %>"><%= p.name %></a></h6>
+                                    <h5>$<%= p.price %></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                    <% } %>
+                </div>
+                <%- include('./shared/pagination.ejs') %>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Section End -->
+<%- include('./shared/footer.ejs') %>

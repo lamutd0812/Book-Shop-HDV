@@ -8,6 +8,7 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var config = require('./config');
 
 var User = require('../model/user');
+var Cart = require('../model/cart');
 
 // used to serialize the user for the session
 passport.serializeUser(function (user, done) {
@@ -42,10 +43,24 @@ passport.use('local-signup',
                     newUser.local.password = hashedPassword
                     newUser.role = 'client';
 
-                    await newUser.save((err) => {
-                        if (err) throw err;
-                        return done(null, newUser);
-                    });
+                    // await newUser.save(async (err) => {
+                    //     if (err) throw err;
+
+                    //     return done(null, newUser);
+                    // });
+
+                    const savedUser = await newUser.save();
+                    //console.log(savedUser);
+
+                    const cart = await Cart.findOne({ userId: savedUser._id });
+                    if (!cart) {
+                        var newCart = new Cart();
+                        newCart.userId = savedUser._id;
+                        newCart.items = [];
+                    }
+                    await newCart.save();
+
+                    return done(null, newUser);
 
                 } catch (err) {
                     console.log(err);
@@ -90,7 +105,7 @@ passport.use(new FacebookStrategy(
         profileFields: ['id', 'displayName', 'email']
     },
     async function (accessToken, refreshToken, profile, done) {
-        console.log(profile);
+        //console.log(profile);
         process.nextTick(async function () {
             try {
                 const user = await User.findOne({ 'facebook.id': profile.id });
@@ -103,10 +118,17 @@ passport.use(new FacebookStrategy(
                 newUser.facebook.name = profile.displayName;
                 newUser.facebook.email = profile.emails[0].value;
                 newUser.role = 'client';
-                await newUser.save((err) => {
-                    if (err) throw err;
-                    return done(null, newUser);
-                });
+
+                const savedUser = await newUser.save();
+                const cart = await Cart.findOne({ userId: savedUser._id });
+                if (!cart) {
+                    var newCart = new Cart();
+                    newCart.userId = savedUser._id;
+                    newCart.items = [];
+                }
+                await newCart.save();
+
+                return done(null, newUser);
             } catch (err) {
                 console.log(err);
             }
@@ -121,7 +143,7 @@ passport.use(new GoogleStrategy(
         callbackURL: config.google_auth.callbackUrl
     },
     function (accessToken, refreshToken, profile, done) {
-        console.log(profile);
+        //console.log(profile);
         try {
             process.nextTick(async function () {
                 const user = await User.findOne({ 'google.id': profile.id });
@@ -135,10 +157,16 @@ passport.use(new GoogleStrategy(
                 newUser.google.email = profile.emails[0].value;
                 newUser.role = 'client';
 
-                await newUser.save((err) => {
-                    if (err) throw err;
-                    return done(null, newUser);
-                });
+                const savedUser = await newUser.save();
+                const cart = await Cart.findOne({ userId: savedUser._id });
+                if (!cart) {
+                    var newCart = new Cart();
+                    newCart.userId = savedUser._id;
+                    newCart.items = [];
+                }
+                await newCart.save();
+
+                return done(null, newUser);
             });
         } catch (err) {
             console.log(err);
