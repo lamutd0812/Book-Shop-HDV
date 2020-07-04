@@ -41,7 +41,7 @@
                                     <span><%= order.status %></span>
                                     <span>$<%= order.totalAmount %></span>
                                     <span><%= order.createdAt.getDate() %>/
-                                        0<%= order.createdAt.getMonth() + 1 %>/
+                                        <%= order.createdAt.getMonth() + 1 %>/
                                         <%= order.createdAt.getFullYear() %>
                                     </span>
                                 </li>

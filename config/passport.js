@@ -99,19 +99,21 @@ passport.use('local-login',
 
 passport.use(new FacebookStrategy(
     {
-        clientID: config.facebook_auth.appId,
-        clientSecret: config.facebook_auth.appSecret,
-        callbackURL: config.facebook_auth.callbackUrl,
+        clientID: config.facebook_auth.appId, // appId
+        clientSecret: config.facebook_auth.appSecret, //appSecret
+        callbackURL: config.facebook_auth.callbackUrl, // callbackUrl
         profileFields: ['id', 'displayName', 'email']
     },
     async function (accessToken, refreshToken, profile, done) {
         //console.log(profile);
         process.nextTick(async function () {
             try {
+                // nếu user đã đăng nhập băng facebook, lấy thông tin user trong DB
                 const user = await User.findOne({ 'facebook.id': profile.id });
                 if (user) {
                     return done(null, user);
                 }
+                // nếu user đăng nhập bằng facebook lần đầu, lưu thông tin user (id, accessToken, name, email) vào DB:
                 var newUser = new User();
                 newUser.facebook.id = profile.id;
                 newUser.facebook.token = accessToken;
@@ -120,6 +122,7 @@ passport.use(new FacebookStrategy(
                 newUser.role = 'client';
 
                 const savedUser = await newUser.save();
+                // tạo giỏ hàng mới cho user đăng nhập facebook lần đầu
                 const cart = await Cart.findOne({ userId: savedUser._id });
                 if (!cart) {
                     var newCart = new Cart();

@@ -22,8 +22,9 @@ router.get('/profile', isAuth, authController.getProfile);
 
 router.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
 
+// callbackUrl
 router.get('/auth/facebook/callback', passport.authenticate('facebook', {
-    failureRedirect: '/login'
+    failureRedirect: '/login' // nếu login facebook thất bại, chuyển hướng về trang login.
 }), authController.getFBAuthCb);
 
 router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));

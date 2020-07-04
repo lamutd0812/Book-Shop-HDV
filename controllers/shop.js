@@ -1,4 +1,4 @@
-const stripe = require('stripe')('');
+const stripe = require('stripe')('sk_test_WYZ0cltAA2EtZHr9L7kVj0VL00fb1r6dYf');
 const paypal = require('../config/paypal');
 //const paypal = require('paypal-rest-sdk');
 
@@ -118,8 +118,9 @@ exports.getProduct = async (req, res, next) => {
 exports.getProductByKeyword = async (req, res, next) => {
     const productId = req.body.product_id;
     //console.log(productId);
+    let categories;
     try {
-        const categories = await Category.find();
+        categories = await Category.find();
         const product = await Product.findById(productId).populate('categoryId');
         res.render('product-detail', {
             user: req.user,
@@ -129,6 +130,13 @@ exports.getProductByKeyword = async (req, res, next) => {
             product: product
         })
     } catch (err) {
+        categories = await Category.find();
+        res.render('error/search-error', {
+            user: req.user,
+            isAuth: req.isAuthenticated(),
+            path: '/products',
+            categories: categories
+        });
         console.log(err);
     }
 };
@@ -211,7 +219,7 @@ exports.getCheckout = async (req, res, next) => {
                 };
             }),
             mode: 'payment',
-            success_url: req.protocol + '://' + req.get('host') + '/place-order', // http://localhost:3000
+            success_url: req.protocol + '://' + req.get('host') + '/place-order', // http://localhost:3000/place-order
             cancel_url: req.protocol + '://' + req.get('host') + '/checkout'
         });
 
@@ -233,17 +241,17 @@ exports.getPaypalCheckout = async (req, res, next) => {
     const cart = await Cart.findOne({ userId: req.user._id }).populate('items.productId');
     //console.log(cart);
 
-    const totalPrice = getTotalPrice(cart);
+    const totalPrice = getTotalPrice(cart); // Lấy ra tổng số tiền hàng trong giỏ hàng
 
-    // create payment object
+    // cấu hình payment
     var payment = {
         "intent": "authorize",
         "payer": {
             "payment_method": "paypal"
         },
         "redirect_urls": {
-            "return_url": "http://localhost:3000/paypal-checkout-success",
-            "cancel_url": "http://localhost:3000/paypal-checkout-error"
+            "return_url": "http://localhost:3000/paypal-checkout-success", // thanh toán thành công
+            "cancel_url": "http://localhost:3000/paypal-checkout-error" // hủy thanh toán
         },
         "transactions": [{
             "amount": {
@@ -254,6 +262,7 @@ exports.getPaypalCheckout = async (req, res, next) => {
         }]
     };
 
+    // tạo payment
     createPay(payment)
         .then((transaction) => {
             var id = transaction.id;
@@ -261,7 +270,7 @@ exports.getPaypalCheckout = async (req, res, next) => {
             var counter = links.length;
             while (counter--) {
                 if (links[counter].method == 'REDIRECT') {
-                    // redirect to paypal where user approves the transaction 
+                    // redirect to paypal where user approves the transaction
                     return res.redirect(links[counter].href);
                 }
             }
@@ -274,12 +283,12 @@ exports.getPaypalCheckout = async (req, res, next) => {
 
 exports.getPaypalCheckoutSuccess = (req, res, next) => {
     console.log(req.query);
-    res.redirect('/place-order');
+    res.redirect('/place-order'); // chuyển hướng đến trang đặt hàng
 }
 
 exports.getPaypalCheckoutError = (req, res, next) => {
     console.log(req.query);
-    res.redirect('/checkout');
+    res.redirect('/checkout'); // chuyển hướng về trang thanh toán
 }
 
 exports.getPlaceOrder = async (req, res, next) => {
@@ -435,7 +444,7 @@ exports.postDeleteCartItem = async (req, res, next) => {
         const totalPrice = getTotalPrice(updatedCart);
         res.status(200).json({
             message: 'Xóa sản phẩm khỏi giỏ hàng thành công!',
-            totalPrice: totalPrice
+            totalPrice: totalPrice // tổng số tiền cập nhật sau khi xóa item
         });
     } catch (err) {
         console.log(err);
@@ -483,15 +492,15 @@ exports.postUpdateCartItemQty = async (req, res, next) => {
 };
 
 exports.getBookByKeyword = (req, res, next) => {
-    var regex = new RegExp(req.query["term"], 'i');
-    var query = Product.find({ name: regex }, { 'name': 1 }).limit(10);
+    var regex = new RegExp(req.query["term"], 'i'); // keyword truyền vào
+    var query = Product.find({ name: regex }, { 'name': 1 }).limit(10); // tìm kiếm trong Db theo keyword
 
     // Execute query in a callback and return products list
     query.exec(function (err, products) {
         if (!err) {
-            res.status(200).json({ products: products });
+            res.status(200).json({ products: products }); // trả về list product dạng json
         } else {
-            res.status(404).json({ error: err });
+            res.status(404).json({ error: err }); // trả về lỗi dạng json
         }
     });
 };

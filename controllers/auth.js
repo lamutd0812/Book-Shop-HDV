@@ -9,7 +9,7 @@ exports.postLogin = (req, res, next) => {
 };
 
 exports.getFBAuthCb = (req, res, next) => {
-    res.redirect('/');
+    res.redirect('/'); // chuyển hướng về trang chủ khi login thành công
 };
 
 exports.getGoogleAuthCb = (req, res, next) => {
