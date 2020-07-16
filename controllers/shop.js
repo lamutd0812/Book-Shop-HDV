@@ -1,4 +1,4 @@
-const stripe = require('stripe')('sk_test_WYZ0cltAA2EtZHr9L7kVj0VL00fb1r6dYf');
+const stripe = require('stripe')('');
 const paypal = require('../config/paypal');
 //const paypal = require('paypal-rest-sdk');
 
